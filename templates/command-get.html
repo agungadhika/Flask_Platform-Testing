@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Command Execution</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+  </head>
+  
+  <body>
+    {% block content %}
+    <h1>Command Execution</h1>
+    <form action="/command2" method="get">
+      <label for="command">Enter a command:</label>
+      <input type="text" id="command" name="command">
+      <input type="submit" value="Execute">
+    </form>
+
+    {% if command and result %}
+    <h2>Command: {{ command }}</h2>
+    <pre>{{ result }}</pre>
+    {% endif %}
+    {% endblock %}
+  </body>
+</html>

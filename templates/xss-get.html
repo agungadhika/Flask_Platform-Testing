@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flask XSS Vulnerable Example</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+  </head>
+  <body>
+    <h1>Welcome to the Vulnerable Example</h1>
+    {% block content %}
+    <form action="/xss2" method="GET">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name">
+      <input type="submit" value="Submit">
+    </form>
+    <p>Hello, {{ name|safe }}!</p>
+    {% endblock %}
+  </body>
+</html>
