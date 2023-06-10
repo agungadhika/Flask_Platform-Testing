@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile.app
+    ports:
+      - "80:5000"
+    volumes:
+      - "./:/app/:ro"
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    volumes:
+      - "./mongo/:/docker-entrypoint-initdb.d/:ro"

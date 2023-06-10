@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NoSQL</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <h1>NoSQL Post</h1>
+    <form id="nosqlForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="result"></div>
+
+    <table id="userTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <p id="errorText" style="display: none; color: red;"></p>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#nosqlForm').submit(function (event) {
+                event.preventDefault();
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var requestData = {
+                    "username": username,
+                    "password": password
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/nosql1",
+                    data: JSON.stringify(requestData),
+                    contentType: "application/json",
+                    success: function (data) {
+                        if (data.length > 0) {
+                            $('#userTable tbody').empty();
+                            for (var i = 0; i < data.length; i++) {
+                                var row = $('<tr>');
+                                row.append($('<td>').text(data[i].username));
+                                row.append($('<td>').text(data[i].password));
+                                $('#userTable tbody').append(row);
+                            }
+                            $('#userTable').show();
+                            $('#errorText').hide();
+                        } else {
+                            $('#userTable').hide();
+                            $('#errorText').text("Username or password is incorrect.").show();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = xhr.responseJSON.message;
+                        $('#userTable').hide();
+                        $('#errorText').text("Error: " + errorMessage).show();
+                    }
+                });
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+
+</html>
