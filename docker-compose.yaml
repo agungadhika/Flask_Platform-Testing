@@ -8,7 +8,7 @@ services:
     ports:
       - "80:5000"
     volumes:
-      - "./:/app/:ro"
+      # - "./:/app/:ro"
   mongo:
     image: mongo:latest
     environment:
