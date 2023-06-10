@@ -7,7 +7,7 @@ services:
       dockerfile: dockerfile.app
     ports:
       - "80:5000"
-    volumes:
+    # volumes:
       # - "./:/app/:ro"
   mongo:
     image: mongo:latest
