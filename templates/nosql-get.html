@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NoSQL Get</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <h1>NoSQL Get</h1>
+
+    <form id="nosqlForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br>
+        <button type="button" onclick="submitForm()">Search</button>
+    </form>
+
+    <table id="userTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user['_id'] }}</td>
+                <td>{{ user['username'] }}</td>
+                <td>{{ user['password'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p id="noUsersText" style="display: none;">No users found.</p>
+
+    <script>
+        function submitForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            var query = {
+                "username": username,
+                "password": password
+            };
+
+            var queryString = encodeURIComponent(JSON.stringify(query));
+            var url = "/nosql2?query=" + queryString;
+            document.location.href = url;
+        }
+    </script>
+
+    {% if users %}
+    <script>
+        document.getElementById("userTable").style.display = "table";
+    </script>
+    {% else %}
+    <script>
+        document.getElementById("noUsersText").style.display = "block";
+    </script>
+    {% endif %}
+
+    {% endblock %}
+</body>
+
+</html>

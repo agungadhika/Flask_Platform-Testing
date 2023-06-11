@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>XXE</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <h1>XXE</h1>
+    <form id="xxeForm">
+        <label for="xxe">Enter XML data:</label>
+        <br>
+        <textarea id="xml" name="xml" rows="4" cols="50"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2 id="input"></h2>
+    <pre id="output"></pre>
+
+    <script>
+        document.getElementById('xml').value = `
+<root>
+    <data>foo</data>
+</root>`.trim()
+        function sendXML(e) {
+            e.preventDefault();
+            var form = document.getElementById("xxeForm");
+            var formData = new FormData(form);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/xxe1");
+            xhr.onreadystatechange = function () {
+                var response = xhr.responseText;
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById("input").textContent = "Input: " + formData.get("xml");
+                    document.getElementById("output").textContent = response;
+                } else if (xhr.readyState === 4) {
+                    alert(response)
+                }
+
+            };
+            xhr.send(formData);
+        }
+
+        document.getElementById("xxeForm").addEventListener("submit", sendXML);
+    </script>
+    {% endblock %}
+</body>
+
+</html>

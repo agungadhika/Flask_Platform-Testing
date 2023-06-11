@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>XXE</title>
+    {% extends 'dashboard.html' %}
+    {% block title %}Dashboard{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    <h1>XXE</h1>
+    <form id="xxeForm">
+        <label for="xxe">Enter XML data:</label>
+        <br>
+        <textarea id="xml" name="xml" rows="4" cols="50">
+<root>
+    <data>foo</data>
+</root>
+        </textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if xml and result:%}
+    <h2>{{xml}}</h2>
+    <pre>{{result}}</pre>
+    {% endif %}
+    {% endblock %}
+</body>
+
+</html>
