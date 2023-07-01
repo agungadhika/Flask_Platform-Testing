@@ -177,8 +177,6 @@ def nosql_post():
     ```
     """
     if request.method == "POST":
-        if any(key for key in ['username', 'password'] if key not in dict(request.json).keys()):
-            return jsonify({"message": "missing username or password"}), 400
         con = connect_mongo()
         # Danger: Potential NoSQL Injection vulnerability
         users = con['user'].find(request.json)
